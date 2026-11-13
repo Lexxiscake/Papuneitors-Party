@@ -44,7 +44,7 @@ export function GameScreen({ party }: { party: Party }) {
       <main>
         <Brand />
         <div className="card center">
-          <div className="spinner" aria-hidden="true" />
+          <span className="badge">Preparando</span>
           <p className="mut" style={{ marginTop: 10 }}>Preparando la primera ronda…</p>
         </div>
       </main>
@@ -156,7 +156,6 @@ function VoteView({
               Elegiste a <b className="ink">{myTargetName}</b>. Esperando a los demás…
             </p>
           </div>
-          <div className="spinner" aria-hidden="true" />
         </div>
       ) : (
         <>
@@ -308,7 +307,7 @@ function RevealView({
         </button>
       ) : (
         <div className="card center">
-          <div className="spinner" aria-hidden="true" />
+          <span className="badge">Esperando</span>
           <p className="mut" style={{ marginTop: 10 }}>Esperando a que el anfitrión continúe…</p>
         </div>
       )}

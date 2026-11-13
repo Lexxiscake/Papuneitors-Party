@@ -161,9 +161,12 @@ export function LobbyScreen({ party }: { party: Party }) {
         </div>
       ) : (
         <div className="card center">
-          <div className="spinner" aria-hidden="true" />
+          <span className="badge">Sala de espera</span>
           <p className="mut" style={{ marginTop: 10 }}>
             Esperando a que <b className="ink">{hostName}</b> inicie la partida…
+          </p>
+          <p className="mut" style={{ fontSize: ".82rem", marginTop: 6 }}>
+            Mientras esperas puedes añadir tus propias preguntas arriba.
           </p>
         </div>
       )}

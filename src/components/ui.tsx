@@ -16,8 +16,8 @@ export const Splash = () => (
   <main>
     <Brand />
     <div className="card center">
-      <div className="spinner" aria-hidden="true" />
-      <p className="mut" style={{ marginTop: 10 }}>Cargando…</p>
+      <span className="badge">Cargando</span>
+      <p className="mut" style={{ marginTop: 10 }}>Un segundo…</p>
     </div>
   </main>
 );

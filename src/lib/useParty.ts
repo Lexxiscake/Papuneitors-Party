@@ -29,7 +29,8 @@ const MESSAGES: Record<string, string> = {
   not_authenticated: "Tu sesión expiró. Vuelve a iniciar sesión.",
   invalid_settings: "Los ajustes de la sala no son válidos.",
   too_many_rooms: "Ya tienes 3 salas activas. Termina o abandona una antes de crear otra.",
-  room_not_found: "No existe una sala con ese código.",
+  room_not_found: "No existe una sala con ese código. Revisa que esté bien escrito.",
+  room_expired: "Esa sala expiró porque se quedó sin jugadores. Pide al anfitrión que cree una nueva.",
   room_not_joinable: "La partida ya empezó. No puedes unirte ahora.",
   room_full: "La sala está llena.",
   not_in_room: "No estás en esa sala.",
@@ -465,14 +466,8 @@ export function useParty() {
   );
 
   const signOut = useCallback(async () => {
-    const id = roomIdRef.current;
-    if (id) {
-      try {
-        await supabase().rpc("leave_room", { p_room: id });
-      } catch {
-        // si falla, igual cerramos la sesión local
-      }
-    }
+    // Cerrar sesión no es abandonar la sala: la membresía se conserva para
+    // poder volver a entrar con el mismo código. Solo se sale con "Abandonar sala".
     setRoomId(null);
     setSnapshot(null);
     setProfile(null);

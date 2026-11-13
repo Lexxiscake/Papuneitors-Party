@@ -47,9 +47,13 @@ export function HomeScreen({ party }: { party: Party }) {
 
         <label className="field">
           <span className="spread"><span>Rondas</span><b>{rounds}</b></span>
-          <input type="range" min={4} max={15} step={1} value={rounds}
+          <input type="range" min={4} max={50} step={1} value={rounds}
             onChange={(e) => setRounds(Number(e.target.value))} />
         </label>
+        <p className="mut" style={{ fontSize: ".8rem", marginTop: -4 }}>
+          Hasta 50 rondas por partida y ninguna pregunta se repite.
+          {!uncomfortable && " Sin las incómodas solo quedan 38 preguntas, así que la partida puede terminar antes."}
+        </p>
 
         <label className="field">
           <span className="spread"><span>Jugadores máximos</span><b>{maxPlayers}</b></span>

@@ -34,6 +34,7 @@ export type Question = {
   id: string;
   content: string;
   category: string;
+  intensity: number;
   is_active: boolean;
   room_id: string | null;
   created_by: string | null;
@@ -48,7 +49,7 @@ export type Round = {
   status: RoundStatus;
   started_at: string;
   revealed_at: string | null;
-  questions: { content: string; category: string } | null;
+  questions: { content: string; category: string; intensity: number } | null;
 };
 
 export type RoundPlayer = {

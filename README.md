@@ -7,12 +7,13 @@ Postgres, RLS y Realtime) y lista para desplegar en **Vercel**.
 ## 1. Configurar Supabase
 
 1. Entra a tu proyecto en [supabase.com](https://supabase.com).
-2. **SQL Editor** → New query: pega y ejecuta `supabase/migrations/20261113000000_init.sql`.
-3. En otra consulta ejecuta `supabase/seed.sql` (crea 81 preguntas). Puedes repetirlo sin
+2. **SQL Editor** → New query: ejecuta las migraciones de `supabase/migrations/`
+   **en orden** (o `supabase db push` si usas la CLI). Cada una es idempotente.
+3. En otra consulta ejecuta `supabase/seed.sql` (418 preguntas). Puedes repetirlo sin
    duplicar: las preguntas usan `on conflict do nothing`.
 
 > **Si ya habías ejecutado el seed anterior**, vuelve a ejecutar `supabase/seed.sql` para
-> añadir las preguntas nuevas (las 12 originales no se duplican).
+> añadir las preguntas nuevas (las que ya existen no se duplican).
 4. Ve a **Project Settings → API** y copia:
    - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
    - **Publishable key** (o `anon public`) → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -37,6 +38,14 @@ Si prefieres dejarlo activo, la app muestra el aviso “revisa tu correo” y fu
 La migración ya agrega las tablas a la publicación `supabase_realtime`. La app además
 hace un sondeo cada 6 segundos como respaldo, así que funciona incluso si Realtime no
 está activo.
+
+### Intensidad progresiva
+
+Cada pregunta tiene un nivel de 1 a 4 y la partida sube de tono sola: 🟢 20% inicial,
+🟡 25%, 🟠 30% y 🔴 25% final. El nivel se calcula en la base de datos
+(`public._guess_intensity`) también para las preguntas que añaden los jugadores, y sigue
+sin repetirse ninguna pregunta dentro de la sala. En una partida de 4 rondas se juega un
+nivel de cada uno.
 
 ### Opcional: expirar salas abandonadas
 
@@ -94,6 +103,7 @@ Recuerda agregar `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` en
 - `src/app/page.tsx` — decide qué pantalla mostrar (auth, inicio, lobby, partida, final).
 - `src/lib/useParty.ts` — sesión, sala, Realtime, sondeo y todas las llamadas RPC.
 - `src/lib/lineup.ts` — los papuneitors (22): únicos nombres por los que se puede votar.
+- `src/lib/intensity.ts` — niveles 🟢🟡🟠🔴 y sus etiquetas.
 - `src/lib/supabase.ts` — cliente de Supabase (clave publishable).
 - `src/components/` — pantallas de la interfaz.
 - `supabase/migrations/` — esquema, RLS, funciones del juego y Realtime.

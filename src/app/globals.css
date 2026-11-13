@@ -126,6 +126,12 @@ input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;b
 .qcard{margin-top:14px}
 .badge{display:inline-block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;
   color:var(--mut);border:1px solid var(--line);background:var(--card2);border-radius:99px;padding:4px 10px}
+.badges,.levels{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.levels{margin-top:10px}
+.badge.lvl1{color:#a7e3bc;border-color:#3f5f4b;background:#16241b}
+.badge.lvl2{color:#f4e2a1;border-color:#6b5a2a;background:#2a2413}
+.badge.lvl3{color:#f8c9a2;border-color:#6d4429;background:#2a1b12}
+.badge.lvl4{color:#ffc2cb;border-color:#7f3b47;background:#2a1519}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .chip{display:flex;align-items:center;gap:7px;appearance:none;font:inherit;font-size:.85rem;font-weight:700;
   color:var(--ink);background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:6px 11px 6px 6px;cursor:pointer}

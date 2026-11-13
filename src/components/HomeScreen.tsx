@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Party } from "../lib/useParty";
+import { INTENSITIES } from "../lib/intensity";
 import { Avatar, Brand } from "./ui";
 
 export function HomeScreen({ party }: { party: Party }) {
@@ -53,6 +54,17 @@ export function HomeScreen({ party }: { party: Party }) {
         <p className="mut" style={{ fontSize: ".8rem", marginTop: -4 }}>
           Hasta 50 rondas por partida y ninguna pregunta se repite.
           {!uncomfortable && " Sin las incómodas solo quedan 38 preguntas, así que la partida puede terminar antes."}
+        </p>
+
+        <div className="levels">
+          {INTENSITIES.map((i) => (
+            <span key={i.level} className={`badge lvl${i.level}`} title={i.hint}>
+              {i.emoji} {i.label}
+            </span>
+          ))}
+        </div>
+        <p className="mut" style={{ fontSize: ".8rem", marginTop: 8 }}>
+          La partida sube de tono: 20% suave, 25% picante, 30% fuerte y 25% sin filtros.
         </p>
 
         <label className="field">

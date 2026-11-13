@@ -285,14 +285,14 @@ export function useParty() {
           .order("joined_at"),
         sb
           .from("questions")
-          .select("id,content,category,is_active,room_id,created_by,created_at")
+          .select("id,content,category,intensity,is_active,room_id,created_by,created_at")
           .eq("room_id", id)
           .eq("is_active", true)
           .order("created_at"),
         sb
           .from("rounds")
           .select(
-            "id,room_id,question_id,round_number,status,started_at,revealed_at,questions(content,category)",
+            "id,room_id,question_id,round_number,status,started_at,revealed_at,questions(content,category,intensity)",
           )
           .eq("room_id", id)
           .order("round_number"),

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { Answer, Round, RoundPlayer } from "../lib/types";
 import type { Party } from "../lib/useParty";
 import { LINEUP, sameName, searchLineup } from "../lib/lineup";
+import { intensityMeta } from "../lib/intensity";
 import { Avatar, Brand } from "./ui";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -38,6 +39,7 @@ export function GameScreen({ party }: { party: Party }) {
   const total = room.settings.total_rounds ?? 8;
   const isHost = room.host_id === me.id;
   const [confirmLeave, setConfirmLeave] = useState(false);
+  const lvl = intensityMeta(round?.questions?.intensity);
 
   if (!round) {
     return (
@@ -67,7 +69,12 @@ export function GameScreen({ party }: { party: Party }) {
       </div>
 
       <div className="card qcard">
-        <span className="badge">{CATEGORY_LABEL[round.questions?.category ?? ""] ?? "pregunta"}</span>
+        <div className="badges">
+          <span className="badge">{CATEGORY_LABEL[round.questions?.category ?? ""] ?? "pregunta"}</span>
+          <span className={`badge lvl${lvl.level}`}>
+            {lvl.emoji} {lvl.label}
+          </span>
+        </div>
         <p className="qtext">{round.questions?.content ?? "Pregunta no disponible"}</p>
       </div>
 

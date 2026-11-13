@@ -472,3 +472,12 @@ insert into public.questions (content, category) values
   ('¿Quién es más probable que revele accidentalmente su mayor secreto sexual?', 'incomodas'),
   ('¿Quién es más probable que sea la persona más diferente de lo que todos imaginan?', 'incomodas')
 on conflict do nothing;
+
+
+-- ---------------------------------------------------------------------
+-- Intensidad 🟢🟡🟠🔴: mismo clasificador que usa la app.
+-- La migración crea la columna y la función; esto cubre las filas del seed.
+-- ---------------------------------------------------------------------
+update public.questions
+   set intensity = public._guess_intensity(content)
+ where room_id is null;

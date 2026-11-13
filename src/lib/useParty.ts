@@ -586,6 +586,18 @@ export function useParty() {
     await refresh({ silent: true });
   }, [run, rpc, refresh]);
 
+  const restartGame = useCallback(async () => {
+    const id = roomIdRef.current;
+    if (!id) return;
+    const res = await run("restart", () =>
+      rpc<{ ok: boolean; deck_reset: boolean }>("restart_game", { p_room: id }),
+    );
+    if (res?.deck_reset) {
+      setNotice("Ya se habían usado todas las preguntas: se barajó el mazo completo.");
+    }
+    await refresh({ silent: true });
+  }, [run, rpc, refresh]);
+
   const addQuestion = useCallback(
     async (content: string) => {
       const id = roomIdRef.current;
@@ -651,6 +663,7 @@ export function useParty() {
     submitVote,
     forceReveal,
     nextRound,
+    restartGame,
     addQuestion,
     deleteQuestion,
     goHome,

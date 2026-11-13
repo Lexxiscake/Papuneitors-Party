@@ -90,3 +90,201 @@ insert into public.questions (content, category) values
   ('¿Quién contestaría "¿qué?" a una pregunta de sí o no?', 'graciosas'),
   ('¿Quién tiene más probabilidades de hacerse viral por una tontería?', 'caoticas')
 on conflict do nothing;
+
+-- =====================================================================
+-- Ampliación: 160 preguntas incómodas más (total ~203 incómodas).
+-- Ejecutar de nuevo no duplica nada.
+-- =====================================================================
+insert into public.questions (content, category) values
+  -- ---------- Mentiras y excusas ----------
+  ('¿Quién ha fingido una emergencia para cancelar y se fue a otra fiesta?', 'incomodas'),
+  ('¿Quién miente tanto que ya no recuerda sus propias versiones?', 'incomodas'),
+  ('¿Quién ha dicho que estaba trabajando y estaba durmiendo?', 'incomodas'),
+  ('¿Quién ha inventado que perdió el celular para no responder?', 'incomodas'),
+  ('¿Quién ha culpado a un familiar de una mentira suya?', 'incomodas'),
+  ('¿Quién dice "ya voy saliendo" y todavía está bañándose?', 'incomodas'),
+  ('¿Quién ha negado algo con capturas en la cara?', 'incomodas'),
+  ('¿Quién se inventa enfermedades para no ir a compromisos?', 'incomodas'),
+  ('¿Quién ha mentido sobre su edad para ligar?', 'incomodas'),
+  ('¿Quién ha dicho que no fuma y luego pide de todo?', 'incomodas'),
+
+  -- ---------- Exes y obsesiones ----------
+  ('¿Quién sigue teniendo fotos de su ex en el celular?', 'incomodas'),
+  ('¿Quién ha revisado el perfil de la nueva pareja de su ex?', 'incomodas'),
+  ('¿Quién contestaría un mensaje de su ex estando en pareja?', 'incomodas'),
+  ('¿Quién ha vuelto con su ex solo por no estar solo?', 'incomodas'),
+  ('¿Quién tiene un ex bloqueado y desbloqueado tres veces?', 'incomodas'),
+  ('¿Quién se acuerda del cumpleaños de su ex y no del de su mamá?', 'incomodas'),
+  ('¿Quién ha ido a un lugar solo para coincidir con su ex?', 'incomodas'),
+  ('¿Quién guarda cartas o regalos de una relación que ya terminó?', 'incomodas'),
+  ('¿Quién ha llorado con una canción que le dedicó su ex?', 'incomodas'),
+  ('¿Quién dice que superó a su ex y sigue revisando su perfil?', 'incomodas'),
+
+  -- ---------- Redes y stalkeo ----------
+  ('¿Quién tiene una cuenta de chisme y nadie lo sabe?', 'incomodas'),
+  ('¿Quién revisa quién vio sus historias y saca conclusiones?', 'incomodas'),
+  ('¿Quién ha borrado un comentario porque nadie le dio like?', 'incomodas'),
+  ('¿Quién sube fotos y las borra a los diez minutos?', 'incomodas'),
+  ('¿Quién ha creado un perfil falso para ver a alguien?', 'incomodas'),
+  ('¿Quién se ha peleado por un like?', 'incomodas'),
+  ('¿Quién stalkea a la ex de su pareja actual?', 'incomodas'),
+  ('¿Quién tiene un grupo de WhatsApp sin la persona de la que hablan?', 'incomodas'),
+  ('¿Quién ha mandado una captura a la persona equivocada?', 'incomodas'),
+  ('¿Quién publica indirectas y espera que alguien las entienda?', 'incomodas'),
+
+  -- ---------- Dinero y tacañería ----------
+  ('¿Quién nunca paga la cuenta y siempre olvida la billetera?', 'incomodas'),
+  ('¿Quién debe plata y hace como si nada?', 'incomodas'),
+  ('¿Quién presume cosas que no puede pagar?', 'incomodas'),
+  ('¿Quién ha pedido prestado y desapareció?', 'incomodas'),
+  ('¿Quién divide la cuenta al centavo pero pide tragos?', 'incomodas'),
+  ('¿Quién se ha quedado con el cambio y no dijo nada?', 'incomodas'),
+  ('¿Quién gasta todo en apuestas o cajas de videojuegos?', 'incomodas'),
+  ('¿Quién ha vendido algo que no era suyo?', 'incomodas'),
+  ('¿Quién finge tener contactos para aparentar éxito?', 'incomodas'),
+  ('¿Quién se aprovecha de que siempre le invitan?', 'incomodas'),
+
+  -- ---------- Higiene y cuerpo ----------
+  ('¿Quién usa la misma toalla una semana entera?', 'incomodas'),
+  ('¿Quién no se lava las manos después de ir al baño?', 'incomodas'),
+  ('¿Quién se ha puesto ropa sucia porque no se nota?', 'incomodas'),
+  ('¿Quién tiene la cama sin tender desde el mes pasado?', 'incomodas'),
+  ('¿Quién se baña solo cuando va a salir?', 'incomodas'),
+  ('¿Quién esconde un olor y nadie se lo dice?', 'incomodas'),
+  ('¿Quién se ha comido algo caducado y lo negó?', 'incomodas'),
+  ('¿Quién limpia solo cuando llega visita?', 'incomodas'),
+  ('¿Quién tiene el cuarto más caótico del grupo?', 'incomodas'),
+  ('¿Quién miente sobre cuánto ejercicio hace?', 'incomodas'),
+
+  -- ---------- Familia y secretos ----------
+  ('¿Quién tiene un secreto familiar que jamás contaría?', 'incomodas'),
+  ('¿Quién ha espiado el celular de un familiar?', 'incomodas'),
+  ('¿Quién le ha mentido a su mamá sobre dónde estaba?', 'incomodas'),
+  ('¿Quién tiene un hermano favorito y lo disimula mal?', 'incomodas'),
+  ('¿Quién ha robado plata de su propia casa?', 'incomodas'),
+  ('¿Quién no le cuenta nada a su familia y luego se queja?', 'incomodas'),
+  ('¿Quién ha fingido ser el hijo perfecto delante de todos?', 'incomodas'),
+  ('¿Quién sabe un secreto ajeno y lo usa cuando le conviene?', 'incomodas'),
+  ('¿Quién ha culpado a una mascota de algo que rompió?', 'incomodas'),
+  ('¿Quién se avergüenza de algo de su familia y lo oculta?', 'incomodas'),
+
+  -- ---------- Trabajo y estudio ----------
+  ('¿Quién ha copiado en un examen y presume la nota?', 'incomodas'),
+  ('¿Quién ha exagerado sus logros en una entrevista de trabajo?', 'incomodas'),
+  ('¿Quién ha fingido estar enfermo para faltar?', 'incomodas'),
+  ('¿Quién manda su trabajo tarde y culpa al internet?', 'incomodas'),
+  ('¿Quién se ha llevado crédito por algo que no hizo?', 'incomodas'),
+  ('¿Quién usa la IA para todo y lo niega?', 'incomodas'),
+  ('¿Quién se duerme en clases o reuniones?', 'incomodas'),
+  ('¿Quién habla mal del jefe y le sonríe en la cara?', 'incomodas'),
+  ('¿Quién ha renunciado por impulso y se arrepintió?', 'incomodas'),
+  ('¿Quién no sabe hacer lo básico de su propio trabajo?', 'incomodas'),
+
+  -- ---------- Amistad y traiciones ----------
+  ('¿Quién contaría un secreto si le ofrecen algo a cambio?', 'incomodas'),
+  ('¿Quién ha hablado mal de alguien del grupo y luego lo abraza?', 'incomodas'),
+  ('¿Quién desaparece justo cuando hay que ayudar?', 'incomodas'),
+  ('¿Quién solo aparece cuando necesita algo?', 'incomodas'),
+  ('¿Quién se ha quedado con la pareja de un amigo?', 'incomodas'),
+  ('¿Quién ha organizado un plan sin invitar a uno del grupo?', 'incomodas'),
+  ('¿Quién critica las decisiones de todos y no acepta consejos?', 'incomodas'),
+  ('¿Quién sería capaz de vender una amistad por un trabajo?', 'incomodas'),
+  ('¿Quién ha fingido apoyar y por detrás saboteó?', 'incomodas'),
+  ('¿Quién defiende a un amigo que el resto no soporta?', 'incomodas'),
+
+  -- ---------- Amor y celos ----------
+  ('¿Quién ha revisado conversaciones ajenas con el celular abierto?', 'incomodas'),
+  ('¿Quién ha montado una escena por un simple like?', 'incomodas'),
+  ('¿Quién prohíbe amistades y lo llama límites?', 'incomodas'),
+  ('¿Quién usa "estoy bien" para empezar una pelea?', 'incomodas'),
+  ('¿Quién se enamora de quien le presta atención cinco minutos?', 'incomodas'),
+  ('¿Quién ha vuelto con alguien solo por costumbre?', 'incomodas'),
+  ('¿Quién ha fingido estar soltero?', 'incomodas'),
+  ('¿Quién se ha puesto celoso de un amigo?', 'incomodas'),
+  ('¿Quién ha confesado su amor por mensaje y se arrepintió?', 'incomodas'),
+  ('¿Quién sigue en una relación que ya no quiere por miedo?', 'incomodas'),
+
+  -- ---------- Ligues ----------
+  ('¿Quién ha seguido un beso que no quería por no incomodar?', 'incomodas'),
+  ('¿Quién tiene un tipo específico y siempre termina mal?', 'incomodas'),
+  ('¿Quién ha ligado con alguien solo para presumirlo?', 'incomodas'),
+  ('¿Quién ha usado una app de citas estando en pareja?', 'incomodas'),
+  ('¿Quién ha mandado un mensaje comprometedor a la persona equivocada?', 'incomodas'),
+  ('¿Quién ha fingido gustos para caerle bien a alguien?', 'incomodas'),
+  ('¿Quién ha desaparecido después de la primera cita?', 'incomodas'),
+  ('¿Quién tiene un casi algo que todavía le duele?', 'incomodas'),
+  ('¿Quién ha coqueteado para conseguir un favor?', 'incomodas'),
+  ('¿Quién dice que no le gusta nadie y está hablando con tres?', 'incomodas'),
+
+  -- ---------- Vergüenzas públicas ----------
+  ('¿Quién se ha caído en público y siguió como si nada?', 'incomodas'),
+  ('¿Quién ha llamado a alguien por el nombre de su ex?', 'incomodas'),
+  ('¿Quién se ha quedado dormido en una cita?', 'incomodas'),
+  ('¿Quién ha mandado un mensaje al grupo equivocado?', 'incomodas'),
+  ('¿Quién se ha hecho pipí de la risa?', 'incomodas'),
+  ('¿Quién ha llorado en el trabajo o en la escuela?', 'incomodas'),
+  ('¿Quién ha dicho en voz alta algo que pensaba solo?', 'incomodas'),
+  ('¿Quién se ha tirado un gas y culpó a otro?', 'incomodas'),
+  ('¿Quién ha fingido saber de un tema y quedó en evidencia?', 'incomodas'),
+  ('¿Quién se ha quedado atrapado en un baño?', 'incomodas'),
+
+  -- ---------- Hábitos y adicciones ----------
+  ('¿Quién no puede pasar una hora sin el celular?', 'incomodas'),
+  ('¿Quién revisa el celular apenas despierta?', 'incomodas'),
+  ('¿Quién ha mentido sobre cuánto toma?', 'incomodas'),
+  ('¿Quién necesita fumar para poder socializar?', 'incomodas'),
+  ('¿Quién se gasta la quincena en comida a domicilio?', 'incomodas'),
+  ('¿Quién no ha dormido por estar viendo series?', 'incomodas'),
+  ('¿Quién tiene una app de apuestas instalada?', 'incomodas'),
+  ('¿Quién se muerde las uñas hasta sangrar?', 'incomodas'),
+  ('¿Quién se ha prometido dejar algo y duró un día?', 'incomodas'),
+  ('¿Quién no puede dormir sin ruido de fondo?', 'incomodas'),
+
+  -- ---------- Ego y apariencia ----------
+  ('¿Quién se mira en cada espejo que encuentra?', 'incomodas'),
+  ('¿Quién se cree el más inteligente y dice tonterías?', 'incomodas'),
+  ('¿Quién necesita aprobación para todo?', 'incomodas'),
+  ('¿Quién se ofende si no lo invitan?', 'incomodas'),
+  ('¿Quién habla de sí mismo en tercera persona?', 'incomodas'),
+  ('¿Quién se cree el centro de cualquier historia?', 'incomodas'),
+  ('¿Quién se arregla una hora para ir a la tienda?', 'incomodas'),
+  ('¿Quién presume cosas que no tiene?', 'incomodas'),
+  ('¿Quién no acepta una crítica ni por error?', 'incomodas'),
+  ('¿Quién se cree mejor que todos en su familia?', 'incomodas'),
+
+  -- ---------- Moral dudosa ----------
+  ('¿Quién ha visto algo malo y no dijo nada?', 'incomodas'),
+  ('¿Quién se ha aprovechado de alguien en un mal momento?', 'incomodas'),
+  ('¿Quién ha mentido para que castiguen a otro?', 'incomodas'),
+  ('¿Quién ha discriminado y lo llama broma?', 'incomodas'),
+  ('¿Quién ha grabado a alguien sin permiso?', 'incomodas'),
+  ('¿Quién se ríe del sufrimiento ajeno?', 'incomodas'),
+  ('¿Quién ha usado una enfermedad como excusa?', 'incomodas'),
+  ('¿Quién cambiaría su voto por un favor?', 'incomodas'),
+  ('¿Quién ha dejado tirada a una persona en la calle?', 'incomodas'),
+  ('¿Quién justifica sus errores con un "así soy"?', 'incomodas'),
+
+  -- ---------- Fiestas y borracheras ----------
+  ('¿Quién siempre termina llorando en las fiestas?', 'incomodas'),
+  ('¿Quién se perdió y apareció al día siguiente?', 'incomodas'),
+  ('¿Quién ha vomitado en un lugar que no debía?', 'incomodas'),
+  ('¿Quién ha roto algo y se fue sin avisar?', 'incomodas'),
+  ('¿Quién se duerme primero en toda reunión?', 'incomodas'),
+  ('¿Quién ha bailado encima de una mesa?', 'incomodas'),
+  ('¿Quién ha coqueteado con el ex de alguien en la misma fiesta?', 'incomodas'),
+  ('¿Quién ha pedido un taxi y se bajó a mitad de camino?', 'incomodas'),
+  ('¿Quién no recuerda la mitad de la noche?', 'incomodas'),
+  ('¿Quién dijo "no tomo" y terminó peor que todos?', 'incomodas'),
+
+  -- ---------- Secretos sueltos ----------
+  ('¿Quién sería capaz de tatuarse el nombre de un ex?', 'incomodas'),
+  ('¿Quién ha mentido sobre su grupo sanguíneo o sus alergias?', 'incomodas'),
+  ('¿Quién tiene un diario secreto?', 'incomodas'),
+  ('¿Quién ha escrito una carta y nunca la envió?', 'incomodas'),
+  ('¿Quién le habla a sus plantas o mascotas como personas?', 'incomodas'),
+  ('¿Quién ha llorado con un video de animales?', 'incomodas'),
+  ('¿Quién guarda tickets de cosas que nunca va a devolver?', 'incomodas'),
+  ('¿Quién ha fingido otra personalidad en internet?', 'incomodas'),
+  ('¿Quién se ha inventado una anécdota para caer bien?', 'incomodas'),
+  ('¿Quién sería capaz de hacerse pasar por otra persona?', 'incomodas')
+on conflict do nothing;

@@ -94,7 +94,32 @@ export function FinalScreen({ party }: { party: Party }) {
         ))}
       </div>
 
-      <button className="btn full" onClick={party.goHome}>Volver al inicio</button>
+      {room.host_id === me.id ? (
+        <>
+          <button
+            className="btn full"
+            disabled={party.busy === "restart"}
+            onClick={party.restartGame}
+          >
+            {party.busy === "restart" ? "Preparando…" : "Jugar otra sesión"}
+          </button>
+          <p className="mut center" style={{ marginTop: 8, fontSize: ".82rem" }}>
+            Vuelve al lobby con el mismo código y los mismos jugadores. Las preguntas ya usadas no se
+            repiten.
+          </p>
+          <button className="btn ghost full" style={{ marginTop: 10 }} onClick={party.goHome}>
+            Volver al inicio
+          </button>
+        </>
+      ) : (
+        <>
+          <button className="btn full" onClick={party.goHome}>Volver al inicio</button>
+          <p className="mut center" style={{ marginTop: 10, fontSize: ".82rem" }}>
+            El anfitrión puede iniciar otra sesión con el mismo código. Las preguntas ya usadas no se
+            repiten.
+          </p>
+        </>
+      )}
       <p className="mut center" style={{ marginTop: 14, fontSize: ".82rem" }}>
         La sala quedó guardada. Puedes volver a entrar con el código {room.code} mientras siga activa.
       </p>

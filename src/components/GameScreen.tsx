@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import type { Answer, Profile, Round, RoundPlayer } from "../lib/types";
+import { useMemo, useState } from "react";
+import type { Answer, Round, RoundPlayer } from "../lib/types";
 import type { Party } from "../lib/useParty";
-import { supabase } from "../lib/supabase";
+import { LINEUP, sameName, searchLineup } from "../lib/lineup";
 import { Avatar, Brand } from "./ui";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -15,19 +15,16 @@ const CATEGORY_LABEL: Record<string, string> = {
   aleatorias: "de la sala",
 };
 
-function namesFor(round: Round, players: RoundPlayer[], answers: Answer[], members: { user_id: string; profiles: { username: string } | null }[]) {
+function voterNames(players: RoundPlayer[], members: { user_id: string; profiles: { username: string } | null }[]) {
   const map = new Map<string, string>();
   members.forEach((m) => map.set(m.user_id, m.profiles?.username ?? "Jugador"));
-  players.filter((p) => p.round_id === round.id).forEach((p) => map.set(p.user_id, p.profiles?.username ?? "Jugador"));
-  answers.filter((a) => a.round_id === round.id).forEach((a) => {
-    if (a.target?.username) map.set(a.selected_user_id, a.target.username);
-  });
+  players.forEach((p) => map.set(p.user_id, p.profiles?.username ?? "Jugador"));
   return map;
 }
 
 function tally(answers: Answer[]) {
   const counts = new Map<string, number>();
-  answers.forEach((a) => counts.set(a.selected_user_id, (counts.get(a.selected_user_id) ?? 0) + 1));
+  answers.forEach((a) => counts.set(a.selected_name, (counts.get(a.selected_name) ?? 0) + 1));
   const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]);
   const max = rows[0]?.[1] ?? 0;
   return { rows, max, total: answers.length, winners: rows.filter((r) => r[1] === max).map((r) => r[0]) };
@@ -79,9 +76,7 @@ export function GameScreen({ party }: { party: Party }) {
           key={round.id}
           party={party}
           round={round}
-          players={roundPlayers}
           answers={answers}
-          meId={me.id}
           isHost={isHost}
           playersInRound={roundPlayers.filter((p) => p.round_id === round.id)}
         />
@@ -120,69 +115,27 @@ function VoteView({
   round,
   playersInRound,
   answers,
-  meId,
   isHost,
 }: {
   party: Party;
   round: Round;
-  players: RoundPlayer[];
   answers: Answer[];
-  meId: string;
   isHost: boolean;
   playersInRound: RoundPlayer[];
 }) {
   const [term, setTerm] = useState("");
-  const [results, setResults] = useState<Profile[]>([]);
-  const [sel, setSel] = useState<Profile | null>(null);
-  const [searching, setSearching] = useState(false);
+  const [sel, setSel] = useState<string | null>(null);
 
+  const meName = party.profile?.username ?? "";
   const voted = playersInRound.filter((p) => p.has_voted).length;
   const totalVoters = playersInRound.length;
-  const myAnswer = answers.find((a) => a.round_id === round.id && a.voter_id === meId);
-  const myTarget = myAnswer ? playersInRound.find((p) => p.user_id === myAnswer.selected_user_id) : null;
-  const myTargetName = myTarget?.profiles?.username ?? myAnswer?.target?.username ?? "un jugador";
+  const myAnswer = answers.find((a) => a.round_id === round.id && a.voter_id === party.profile?.id);
+  const myTargetName = myAnswer?.selected_name ?? "un papuneitor";
   const busy = party.busy === "vote";
 
-  const quick = useMemo(
-    () =>
-      playersInRound.map((p) => ({
-        id: p.user_id,
-        username: p.profiles?.username ?? "Jugador",
-        avatar: p.profiles?.avatar ?? null,
-      })),
-    [playersInRound],
-  );
-
-  const idsKey = quick.map((q) => q.id).join(",");
-
-  useEffect(() => {
-    let active = true;
-    const cleaned = term.trim().replace(/[%_,()]/g, " ").trim();
-
-    if (!cleaned) {
-      setResults(quick);
-      setSearching(false);
-      return () => { active = false; };
-    }
-
-    setSearching(true);
-    const t = setTimeout(async () => {
-      const { data, error } = await supabase()
-        .from("profiles")
-        .select("id,username,avatar")
-        .ilike("username", `%${cleaned}%`)
-        .order("username")
-        .limit(10);
-      if (!active) return;
-      if (error) console.error(error);
-      setResults((data ?? []) as Profile[]);
-      setSearching(false);
-    }, 220);
-
-    return () => { active = false; clearTimeout(t); };
-  }, [term, idsKey]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const showList = !myAnswer && !sel && term.trim().length > 0 && results.length > 0;
+  const results = useMemo(() => searchLineup(term), [term]);
+  const showList = !myAnswer && !sel && term.trim().length > 0;
+  const noMatch = !myAnswer && !sel && term.trim().length > 0 && results.length === 0;
 
   return (
     <div className="card">
@@ -212,18 +165,18 @@ function VoteView({
             <div className="combo" style={{ marginTop: 6 }}>
               <input
                 role="combobox"
-                aria-expanded={showList}
+                aria-expanded={!!showList && results.length > 0}
                 aria-controls="resultados"
                 autoComplete="off"
                 autoFocus
                 placeholder="Escribe un nombre"
-                value={sel ? sel.username : term}
+                value={sel ?? term}
                 onChange={(e) => { setTerm(e.target.value); if (sel) setSel(null); }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
                     if (!sel && results.length) setSel(results[0]);
-                    else if (sel) party.submitVote(sel.id);
+                    else if (sel) party.submitVote(sel);
                   }
                 }}
                 disabled={!!sel}
@@ -233,40 +186,39 @@ function VoteView({
                   Cambiar
                 </button>
               )}
-              {showList && (
+              {showList && results.length > 0 && (
                 <ul id="resultados" role="listbox">
-                  {results.map((p) => (
-                    <li key={p.id} role="option" aria-selected={false} onClick={() => { setSel(p); setTerm(p.username); }}>
-                      <Avatar n={p.username} s={28} />
-                      <span className="ellipsis">{p.username}{p.id === meId && " (tú)"}</span>
+                  {results.map((name) => (
+                    <li key={name} role="option" aria-selected={false} onClick={() => { setSel(name); setTerm(name); }}>
+                      <Avatar n={name} s={28} />
+                      <span className="ellipsis">{name}{sameName(name, meName) && " (tú)"}</span>
                     </li>
                   ))}
                 </ul>
               )}
-              {searching && <p className="mut" style={{ marginTop: 8 }}>Buscando…</p>}
-              {!searching && term.trim().length > 0 && results.length === 0 && !sel && (
-                <p className="mut" style={{ marginTop: 8 }}>Ningún jugador con ese nombre.</p>
+              {noMatch && (
+                <p className="mut" style={{ marginTop: 8 }}>Ninguno de los {LINEUP.length} papuneitors se llama así.</p>
               )}
             </div>
           </div>
 
           {term.trim().length === 0 && (
             <div className="chips">
-              {quick.map((p) => (
-                <button key={p.id} className="chip" onClick={() => { setSel(p); setTerm(p.username); }}>
-                  <Avatar n={p.username} s={24} />{p.username}{p.id === meId && " (tú)"}
+              {LINEUP.map((name) => (
+                <button key={name} className="chip" onClick={() => { setSel(name); setTerm(name); }}>
+                  <Avatar n={name} s={24} />{name}{sameName(name, meName) && " (tú)"}
                 </button>
               ))}
             </div>
           )}
 
-          <p className="chosen">{sel ? `Elegiste a ${sel.username}` : ""}</p>
-          <button className="btn full" disabled={!sel || busy} onClick={() => sel && party.submitVote(sel.id)}>
+          <p className="chosen">{sel ? `Elegiste a ${sel}` : ""}</p>
+          <button className="btn full" disabled={!sel || busy} onClick={() => sel && party.submitVote(sel)}>
             {busy ? "Enviando…" : "Confirmar voto"}
           </button>
           <p className="mut" style={{ marginTop: 10, fontSize: ".84rem" }}>
-            Puedes votar por cualquier usuario registrado, aunque no esté en la sala. No se puede
-            cambiar después de confirmar.
+            Solo puedes votar por uno de los {LINEUP.length} papuneitors, esté o no en la sala. No se
+            puede cambiar después de confirmar.
           </p>
         </>
       )}
@@ -301,10 +253,9 @@ function RevealView({
   onNext: () => void;
 }) {
   const roundAnswers = answers.filter((a) => a.round_id === round.id);
-  const names = namesFor(round, players, answers, members);
+  const names = voterNames(players, members);
   const r = tally(roundAnswers);
   const last = round.round_number >= totalRounds;
-  const winnerNames = r.winners.map((id) => names.get(id) ?? "Alguien");
 
   return (
     <>
@@ -316,7 +267,7 @@ function RevealView({
       ) : (
         <div className="hero">
           <div className="crown" aria-hidden="true">👑</div>
-          <div className="who">{winnerNames.join(" y ")}</div>
+          <div className="who">{r.winners.join(" y ")}</div>
           <div className="mut">
             {r.max} {r.max === 1 ? "voto" : "votos"}{r.winners.length > 1 && " cada uno (empate)"}
           </div>
@@ -326,9 +277,9 @@ function RevealView({
       {r.total > 0 && (
         <div className="card">
           <b>Resultados</b>
-          {r.rows.map(([id, v]) => (
-            <div className="bar" key={id}>
-              <span className="bn">{names.get(id) ?? "Alguien"}</span>
+          {r.rows.map(([name, v]) => (
+            <div className="bar" key={name}>
+              <span className="bn">{name}</span>
               <div className="tr"><div className="fl lit" style={{ width: `${(v / r.max) * 100}%` }} /></div>
               <b>{v} ({Math.round((v / r.total) * 100)}%)</b>
             </div>
@@ -341,10 +292,10 @@ function RevealView({
         <div className="votes">
           {roundAnswers.map((a) => {
             const voter = names.get(a.voter_id) ?? "Alguien";
-            const target = names.get(a.selected_user_id) ?? a.target?.username ?? "Alguien";
+            const self = sameName(a.selected_name, voter);
             return (
               <div className="vt" key={a.voter_id}>
-                <b>{voter}</b> {a.voter_id === a.selected_user_id ? "se votó a sí mismo" : `votó por ${target}`}
+                <b>{voter}</b> {self ? "se votó a sí mismo" : `votó por ${a.selected_name}`}
               </div>
             );
           })}

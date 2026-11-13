@@ -61,8 +61,7 @@ export type RoundPlayer = {
 export type Answer = {
   round_id: string;
   voter_id: string;
-  selected_user_id: string;
-  target: { username: string; avatar: string | null } | null;
+  selected_name: string;
 };
 
 export type Snapshot = {

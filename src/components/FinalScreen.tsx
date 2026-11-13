@@ -2,22 +2,13 @@
 
 import { useMemo } from "react";
 import type { Party } from "../lib/useParty";
+import { sameName } from "../lib/lineup";
 import { Avatar, Brand } from "./ui";
 
 export function FinalScreen({ party }: { party: Party }) {
   const me = party.profile!;
   const s = party.snapshot!;
-  const { room, rounds, roundPlayers, answers, members } = s;
-
-  const names = useMemo(() => {
-    const map = new Map<string, string>();
-    members.forEach((m) => map.set(m.user_id, m.profiles?.username ?? "Jugador"));
-    roundPlayers.forEach((p) => map.set(p.user_id, p.profiles?.username ?? "Jugador"));
-    answers.forEach((a) => {
-      if (a.target?.username) map.set(a.selected_user_id, a.target.username);
-    });
-    return map;
-  }, [members, roundPlayers, answers]);
+  const { room, rounds, answers } = s;
 
   const perRound = useMemo(
     () =>
@@ -27,7 +18,7 @@ export function FinalScreen({ party }: { party: Party }) {
           const roundAnswers = answers.filter((a) => a.round_id === round.id);
           const counts = new Map<string, number>();
           roundAnswers.forEach((a) =>
-            counts.set(a.selected_user_id, (counts.get(a.selected_user_id) ?? 0) + 1),
+            counts.set(a.selected_name, (counts.get(a.selected_name) ?? 0) + 1),
           );
           const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]);
           const max = rows[0]?.[1] ?? 0;
@@ -42,11 +33,11 @@ export function FinalScreen({ party }: { party: Party }) {
 
   const ranking = useMemo(() => {
     const wins = new Map<string, number>();
-    perRound.forEach((r) => r.winners.forEach((id) => wins.set(id, (wins.get(id) ?? 0) + 1)));
+    perRound.forEach((r) => r.winners.forEach((name) => wins.set(name, (wins.get(name) ?? 0) + 1)));
     return [...wins.entries()]
-      .map(([id, count]) => ({ id, count, name: names.get(id) ?? "Jugador" }))
+      .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
-  }, [perRound, names]);
+  }, [perRound]);
 
   const medals = ["🥇", "🥈", "🥉"];
 
@@ -72,12 +63,12 @@ export function FinalScreen({ party }: { party: Party }) {
           <p className="mut" style={{ marginTop: 8 }}>No hubo votos en esta partida.</p>
         ) : (
           ranking.map((row, i) => (
-            <div className="rank" key={row.id}>
+            <div className="rank" key={row.name}>
               <span className="pos">{i < 3 ? medals[i] : i + 1}</span>
               <Avatar n={row.name} s={32} />
               <span className="ellipsis">
                 {row.name}
-                {row.id === me.id && <span className="mut"> (tú)</span>}
+                {sameName(row.name, me.username) && <span className="mut"> (tú)</span>}
               </span>
               <b>{row.count} {row.count === 1 ? "ronda" : "rondas"}</b>
             </div>
@@ -95,7 +86,7 @@ export function FinalScreen({ party }: { party: Party }) {
               <p className="squestion">{round.questions?.content ?? "Pregunta"}</p>
               <p className="mut" style={{ fontSize: ".82rem" }}>
                 {winners.length
-                  ? `Ganó ${winners.map((id) => names.get(id) ?? "Alguien").join(" y ")} con ${votes} ${votes === 1 ? "voto" : "votos"}`
+                  ? `Ganó ${winners.join(" y ")} con ${votes} ${votes === 1 ? "voto" : "votos"}`
                   : "Sin votos"}
               </p>
             </div>

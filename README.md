@@ -93,6 +93,7 @@ Recuerda agregar `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` en
 
 - `src/app/page.tsx` — decide qué pantalla mostrar (auth, inicio, lobby, partida, final).
 - `src/lib/useParty.ts` — sesión, sala, Realtime, sondeo y todas las llamadas RPC.
+- `src/lib/lineup.ts` — los 19 papuneitors: únicos nombres por los que se puede votar.
 - `src/lib/supabase.ts` — cliente de Supabase (clave publishable).
 - `src/components/` — pantallas de la interfaz.
 - `supabase/migrations/` — esquema, RLS, funciones del juego y Realtime.

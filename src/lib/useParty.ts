@@ -39,7 +39,7 @@ const MESSAGES: Record<string, string> = {
   round_not_found: "Esa ronda ya no existe.",
   round_closed: "La votación de esta ronda ya cerró.",
   not_in_round: "No participas en esta ronda.",
-  invalid_target: "Ese jugador no existe.",
+  invalid_target: "Ese nombre no está en la lista de papuneitors.",
   already_voted: "Ya votaste en esta ronda.",
   no_votes: "Todavía no hay votos que revelar.",
   round_in_progress: "Todavía hay una ronda en votación.",
@@ -313,9 +313,7 @@ export function useParty() {
             .in("round_id", roundIds),
           sb
             .from("answers")
-            .select(
-              "round_id,voter_id,selected_user_id,target:profiles!answers_selected_user_id_fkey(username,avatar)",
-            )
+            .select("round_id,voter_id,selected_name")
             .in("round_id", roundIds),
         ]);
         if (playersRes.error) throw playersRes.error;
@@ -569,10 +567,10 @@ export function useParty() {
   }, [run, rpc, refresh]);
 
   const submitVote = useCallback(
-    async (selectedId: string) => {
+    async (selectedName: string) => {
       const round = snapshot?.rounds[snapshot.rounds.length - 1];
       if (!round) return;
-      await run("vote", () => rpc("submit_answer", { p_round: round.id, p_selected: selectedId }));
+      await run("vote", () => rpc("submit_vote", { p_round: round.id, p_selected: selectedName }));
       await refresh({ silent: true });
     },
     [run, rpc, refresh, snapshot],

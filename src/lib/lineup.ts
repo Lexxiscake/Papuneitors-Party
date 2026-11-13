@@ -21,6 +21,8 @@ export const LINEUP: readonly string[] = [
   "Jocelyn",
   "Andres",
   "Jason",
+  "Axel",
+  "Alos",
 ];
 
 /** Minúsculas y sin tildes, para comparar y buscar sin exigir la grafía exacta. */

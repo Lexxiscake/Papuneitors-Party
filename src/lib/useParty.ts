@@ -24,7 +24,8 @@ const MESSAGES: Record<string, string> = {
   unable_to_validate_email: "El correo no es válido.",
   signup_is_disabled: "El registro está desactivado en este proyecto.",
   signups_not_allowed: "El registro está desactivado en este proyecto.",
-  email_rate_limit: "Demasiados intentos con ese correo. Espera unos minutos.",
+  email_rate_limit:
+    "Supabase bloqueó los correos de confirmación (límite por hora). Desactiva 'Confirm email' en Supabase: Authentication → Sign In / Providers → Email.",
   not_authenticated: "Tu sesión expiró. Vuelve a iniciar sesión.",
   invalid_settings: "Los ajustes de la sala no son válidos.",
   too_many_rooms: "Ya tienes 3 salas activas. Termina o abandona una antes de crear otra.",
@@ -453,7 +454,7 @@ export function useParty() {
         }
         if (!data.session) {
           setNotice(
-            "Cuenta creada. Revisa tu correo y confirma la cuenta para poder entrar.",
+            "Cuenta creada, pero el proyecto exige confirmar el correo. Desactiva 'Confirm email' en Supabase (Authentication → Sign In / Providers → Email) para entrar sin correo.",
           );
           return false;
         }

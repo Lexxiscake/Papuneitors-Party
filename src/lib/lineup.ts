@@ -1,4 +1,4 @@
-// Lista fija de los 19 papuneitors.
+// Lista fija de los papuneitors.
 // Se puede votar por cualquiera de ellos aunque no esté en la sala ni tenga cuenta.
 export const LINEUP: readonly string[] = [
   "Luka",
@@ -20,6 +20,7 @@ export const LINEUP: readonly string[] = [
   "Samuel",
   "Jocelyn",
   "Andres",
+  "Jason",
 ];
 
 /** Minúsculas y sin tildes, para comparar y buscar sin exigir la grafía exacta. */
